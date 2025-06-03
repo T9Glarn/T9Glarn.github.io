@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>T9Glarn Decoder</title>
+<title>T9Glarn Decoder & Encoder</title>
 <link rel="icon" href="Favicon.ico" type="image/x-icon" />
 <style>
   body {
@@ -106,13 +106,14 @@
   </div>
 
   <div class="main-content">
-    <h1>T9Glarn Decoder</h1>
-    <small style="margin-top: 24px;">Enter T9Glarn encoded text (e.g. 4A5C2A7C6B!) and decode it.</small>
-    <small style="margin-top: 12px;">V=1.0.11</small>
+    <h1>T9Glarn Decoder & Encoder</h1>
+    <small style="margin-top: 24px;">Enter T9Glarn encoded text (e.g. 4A5C2A7C6B!) to decode, or normal text to encode it.</small>
+    <small style="margin-top: 12px;">V=1.1.0</small>
 
-    <textarea id="inputText" placeholder="Enter encoded text here..."></textarea>
+    <textarea id="inputText" placeholder="Enter text to encode or decode..."></textarea>
     <div>
       <button onclick="decodeT9Glarn()">Decode</button>
+      <button onclick="encodeT9Glarn()">Encode</button>
       <button onclick="copyOutput()">Copy</button>
       <button onclick="clearFields()">Clear</button>
     </div>
@@ -124,7 +125,7 @@
       <p><strong>How it Works:</strong> This method uses the number pad digits (aka T9) paired with letters (A, B, C, and D) to uniquely encode each character making it both simple and fun to decode!</p>
       <p><strong>Origin Story:</strong> I came up with this encoding method while I was in the shower the night of June 1st, 2025. Sometimes the best ideas hit when you're not even trying!</p>
       <p><strong>What’s with the name?</strong> <em>T9Glarn</em> combines the classic phone keypad system known as T9 (used for texting on old phones) with "Glarn," the name of my dev team's mascot. It’s a fun way to bring together phone tech, and my own creative universe.</p> 
-      <p><strong>How to Use it:</strong> In T9Glarn, each number from 2 to 9 represents a group of letters. The number 2 stands for A, B, and C, so 2A = A, 2B = B, and 2C = C. The number 3 stands for D, E, and F, so 3A = D, 3B = E, and 3C = F. The letter after the number (A, B, C, or sometimes D) tells you which letter in the group to pick. A = first, B = second, C = third, and D = fourth, but only numbers 7 and 9 use D, because: 7 = P, Q, R, S and 9 = W, X, Y, Z. For example, 7D = S and 9D = Z. You’ll only ever use D if you're encoding a letter like S or Z that falls fourth in its group.</p>
+      <p><strong>How to Use it:</strong> In T9Glarn, each number from 2 to 9 represents a group of letters. The number 2 stands for A, B, and C, so 2A = A, 2B = B, and 2C = C. The number 3 stands for D, E, and F, so 3A = D, 3B = E, and 3C = F. The letter after the number (A, B, C, or sometimes D) tells you which letter in the group to pick. A = first, B = second, C = third, and D = fourth, but only numbers 7 and 9 use D, because: 7 = P, Q, R, S and 9 = W, X, Y, Z. You’ll only ever use D if you're encoding a letter like S or Z that falls fourth in its group.</p>
       <p><strong>Challenge:</strong> Try decoding this by yourself, "4C'6A 5A8B7D8A 2A 7D4C5c5C9C 5c4c5c 4A8B9C."</p>
     </div>
   </div>
@@ -149,8 +150,6 @@
     '8': ['T', 'U', 'V'],
     '9': ['W', 'X', 'Y', 'Z'],
   };
-
-  document.getElementById('inputText').addEventListener('input', decodeT9Glarn);
 
   function decodeT9Glarn() {
     const input = document.getElementById('inputText').value.toUpperCase();
@@ -193,6 +192,32 @@
     }
 
     document.getElementById('outputText').textContent = output.toLowerCase();
+  }
+
+  function encodeT9Glarn() {
+    const input = document.getElementById('inputText').value.toUpperCase();
+    let output = '';
+
+    for (const char of input) {
+      if (char === ' ' || char === '\n') {
+        output += char;
+        continue;
+      }
+
+      let found = false;
+      for (const [key, letters] of Object.entries(t9Map)) {
+        const index = letters.indexOf(char);
+        if (index !== -1) {
+          output += key + String.fromCharCode(65 + index);
+          found = true;
+          break;
+        }
+      }
+
+      if (!found) output += char; // If not found, leave as is
+    }
+
+    document.getElementById('outputText').textContent = output;
   }
 
   function copyOutput() {
