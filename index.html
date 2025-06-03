@@ -84,6 +84,13 @@
     margin-bottom: 12px;
     color: #4CAF50;
   }
+  footer {
+    text-align: center;
+    color: #777;
+    font-size: 0.9rem;
+    margin-top: 40px;
+    width: 100%;
+  }
 </style>
 </head>
 <body>
@@ -120,6 +127,10 @@
   <img src="T9 195x195.png" alt="T9Glarn Logo">
 </div>
 
+<footer>
+  &copy; 2025 Glarnware Games. All rights reserved.
+</footer>
+
 <script>
   const t9Map = {
     '2': ['A', 'B', 'C'],
@@ -142,7 +153,6 @@
     while (i < input.length) {
       const char = input[i];
 
-      // Handle spaces, newlines, and punctuation directly
       if (char === ' ' || char === '\n' || !/[2-9]/.test(char)) {
         output += char;
         i++;
@@ -153,7 +163,7 @@
       const letterCode = input[i + 1];
 
       if (!num || !letterCode) {
-        output += num || ''; // Add partial if needed
+        output += num || '';
         break;
       }
 
