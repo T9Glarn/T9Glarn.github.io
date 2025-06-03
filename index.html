@@ -110,7 +110,8 @@
     <p><strong>Origin Story:</strong> I came up with this encoding method while I was in the shower the night of June 1st, 2025. Sometimes the best ideas hit when you're not even trying!</p>
     <p><strong>What’s in the name?</strong> <em>T9Glarn</em> combines the classic phone keypad system known as T9 (used for texting on old phones) with "Glarn," the name of my dev team's mascot. It’s a fun way to bring together phone tech, and my own creative universe.</p>
     <p>This method uses the number pad digits paired with letters (A, B, C, and D) to uniquely encode each character — making it both simple and fun to decode!</p>
-    <p><strong>Challenge:</strong> Try decoding this by yourself, "4C 2A6A 5A8B7D8A 2A 7D4C5c5C9C 4A8B9C"</p>
+    <p><strong>Challenge:</strong> Try decoding this by yourself, </p>
+    <p>"4C 2A6A 5A8B7D8A 2A 7D4C5c5C9C 5c4c5c 4A8B9C."</p>
   </div>
 </div>
 
@@ -140,7 +141,8 @@
     while (i < input.length) {
       const char = input[i];
 
-      if (char === ' ' || char === '\n') {
+      // Handle spaces, newlines, and punctuation directly
+      if (char === ' ' || char === '\n' || !/[2-9]/.test(char)) {
         output += char;
         i++;
         continue;
@@ -150,20 +152,22 @@
       const letterCode = input[i + 1];
 
       if (!num || !letterCode) {
-        document.getElementById('outputText').textContent = 'Invalid input length. Each letter must be two characters.';
-        return;
+        output += num || ''; // Add partial if needed
+        break;
       }
 
       if (!t9Map[num]) {
-        document.getElementById('outputText').textContent = `Invalid number key at position ${i + 1}: ${num}`;
-        return;
+        output += num + letterCode;
+        i += 2;
+        continue;
       }
 
       const index = letterCode.charCodeAt(0) - 'A'.charCodeAt(0);
 
       if (index < 0 || index >= t9Map[num].length) {
-        document.getElementById('outputText').textContent = `Invalid selector letter at position ${i + 2}: ${letterCode}`;
-        return;
+        output += num + letterCode;
+        i += 2;
+        continue;
       }
 
       output += t9Map[num][index];
