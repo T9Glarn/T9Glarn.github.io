@@ -8,7 +8,7 @@
 <style>
   body {
     font-family: Arial, sans-serif;
-    max-width: 720px;
+    max-width: 1000px;
     margin: 40px auto;
     padding: 0 20px;
     background: #222;
@@ -81,6 +81,10 @@
     font-size: 1rem;
     line-height: 1.5;
   }
+  .about-wide {
+    width: 120%;
+    margin-left: -10%;
+  }
   .about h2 {
     text-align: center;
     margin-bottom: 12px;
@@ -104,7 +108,7 @@
   <div class="main-content">
     <h1>T9Glarn Decoder</h1>
     <small style="margin-top: 24px;">Enter T9Glarn encoded text (e.g. 4A5C2A7C6B!) and decode it.</small>
-    <small style="margin-top: 12px;">V=1.0.10</small>
+    <small style="margin-top: 12px;">V=1.0.11</small>
 
     <textarea id="inputText" placeholder="Enter encoded text here..."></textarea>
     <div>
@@ -114,7 +118,7 @@
     </div>
 
     <div class="result" id="outputText"></div>
-    <div class="about">
+    <div class="about about-wide">
       <h2>About T9Glarn</h2>
       <p><strong>How it Works:</strong> This method uses the number pad digits (aka T9) paired with letters (A, B, C, and D) to uniquely encode each character making it both simple and fun to decode!</p>
       <p><strong>Created by:</strong> Tayten (Last name not here for privacy reasons)</p>
