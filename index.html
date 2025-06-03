@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>T9Glarn Decoder</title>
+<link rel="icon" href="Favicon.ico" type="image/x-icon" />
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 720px;
+    margin: 40px auto;
+    padding: 0 20px;
+    background: #222;
+    color: #eee;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+  }
+  .main-content {
+    flex: 1;
+  }
+  .side-image {
+    flex-shrink: 0;
+    align-self: flex-start;
+  }
+  .side-image img {
+    width: 195px;
+    height: 195px;
+    border-radius: 8px;
+  }
+  input, textarea {
+    width: 100%;
+    font-size: 1.2rem;
+    padding: 10px;
+    margin: 10px 0 20px 0;
+    border-radius: 6px;
+    border: none;
+  }
+  textarea {
+    height: 100px;
+  }
+  button {
+    font-size: 1.2rem;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  button:hover {
+    background-color: #45a049;
+  }
+  .result {
+    font-size: 1.4rem;
+    padding: 10px;
+    background: #333;
+    border-radius: 6px;
+    white-space: pre-wrap;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 0;
+  }
+  small {
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 24px;
+    color: #bbb;
+    text-align: center;
+  }
+  .about {
+    background: #111;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 40px;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  .about h2 {
+    text-align: center;
+    margin-bottom: 12px;
+    color: #4CAF50;
+  }
+</style>
+</head>
+<body>
+
+<div class="side-image">
+  <img src="Glarn.png" alt="Glarn Mascot" />
+</div>
+
+<div class="main-content">
+  <h1>T9Glarn Decoder</h1>
+  <small style="margin-top: 24px;">Enter T9Glarn encoded text (e.g. 4A5C2A7C6B) and decode it.</small>
+
+  <textarea id="inputText" placeholder="Enter encoded text here..."></textarea>
+  <div>
+    <button onclick="decodeT9Glarn()">Decode</button>
+    <button onclick="copyOutput()">Copy</button>
+    <button onclick="clearFields()">Clear</button>
+  </div>
+
+  <div class="result" id="outputText"></div>
+  <div class="about">
+    <h2>About T9Glarn</h2>
+    <p><strong>Created by:</strong> Tayten (Last name not here for privacy reasons)</p>
+    <p><strong>Origin Story:</strong> I came up with this encoding method while I was in the shower the night of June 1st, 2025. Sometimes the best ideas hit when you're not even trying!</p>
+    <p><strong>What’s in the name?</strong> <em>T9Glarn</em> combines the classic phone keypad system known as T9 (used for texting on old phones) with "Glarn," the quirky name of my dev team's mascot. It’s a fun way to bring together phone tech, and my own creative universe.</p>
+    <p>This method uses the number pad digits paired with letters (A, B, C, and D) to uniquely encode each character — making it both simple and fun to decode!</p>
+    <p><strong>Challenge:</strong> Try decoding this by yourself, "4C2A6A5A8B7D8A2A7D4C5C5C9C4A8B9C"</p>
+  </div>
+</div>
+
+<div class="side-image">
+  <img src="T9 195x195.png" alt="T9Glarn Logo">
+</div>
+
+<script>
+  const t9Map = {
+    '2': ['A', 'B', 'C'],
+    '3': ['D', 'E', 'F'],
+    '4': ['G', 'H', 'I'],
+    '5': ['J', 'K', 'L'],
+    '6': ['M', 'N', 'O'],
+    '7': ['P', 'Q', 'R', 'S'],
+    '8': ['T', 'U', 'V'],
+    '9': ['W', 'X', 'Y', 'Z'],
+  };
+
+  document.getElementById('inputText').addEventListener('input', decodeT9Glarn);
+
+  function decodeT9Glarn() {
+    const input = document.getElementById('inputText').value.toUpperCase().replace(/\s+/g, '');
+    let output = '';
+
+    if (input.length % 2 !== 0) {
+      document.getElementById('outputText').textContent = 'Invalid input length. Each letter must be two characters.';
+      return;
+    }
+
+    for (let i = 0; i < input.length; i += 2) {
+      const num = input[i];
+      const letterCode = input[i + 1];
+
+      if (!t9Map[num]) {
+        document.getElementById('outputText').textContent = `Invalid number key at position ${i + 1}: ${num}`;
+        return;
+      }
+
+      const index = letterCode.charCodeAt(0) - 'A'.charCodeAt(0);
+
+      if (index < 0 || index >= t9Map[num].length) {
+        document.getElementById('outputText').textContent = `Invalid selector letter at position ${i + 2}: ${letterCode}`;
+        return;
+      }
+
+      output += t9Map[num][index];
+    }
+
+    document.getElementById('outputText').textContent = output.toLowerCase();
+  }
+
+  function copyOutput() {
+    const text = document.getElementById("outputText").textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      alert("Copied to clipboard!");
+    });
+  }
+
+  function clearFields() {
+    document.getElementById('inputText').value = '';
+    document.getElementById('outputText').textContent = '';
+  }
+</script>
+
+</body>
+</html>
