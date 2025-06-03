@@ -133,17 +133,26 @@
   document.getElementById('inputText').addEventListener('input', decodeT9Glarn);
 
   function decodeT9Glarn() {
-    const input = document.getElementById('inputText').value.toUpperCase().replace(/\s+/g, '');
+    const input = document.getElementById('inputText').value.toUpperCase();
     let output = '';
+    let i = 0;
 
-    if (input.length % 2 !== 0) {
-      document.getElementById('outputText').textContent = 'Invalid input length. Each letter must be two characters.';
-      return;
-    }
+    while (i < input.length) {
+      const char = input[i];
 
-    for (let i = 0; i < input.length; i += 2) {
+      if (char === ' ' || char === '\n') {
+        output += char;
+        i++;
+        continue;
+      }
+
       const num = input[i];
       const letterCode = input[i + 1];
+
+      if (!num || !letterCode) {
+        document.getElementById('outputText').textContent = 'Invalid input length. Each letter must be two characters.';
+        return;
+      }
 
       if (!t9Map[num]) {
         document.getElementById('outputText').textContent = `Invalid number key at position ${i + 1}: ${num}`;
@@ -158,6 +167,7 @@
       }
 
       output += t9Map[num][index];
+      i += 2;
     }
 
     document.getElementById('outputText').textContent = output.toLowerCase();
