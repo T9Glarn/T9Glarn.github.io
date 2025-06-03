@@ -1,2 +1,2 @@
-# T9Glarn.github.io
-Cuz COOL
+# T9Glarn Decoder
+(I MADE T9GLARN!!!!!)
